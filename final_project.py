@@ -1,39 +1,68 @@
-# this file was created by ziante
-    # with help of https://www.youtube.com/watch?v=Dl9VAVO4EcY
-    #https://stackoverflow.com/questions/37007009/typing-game-made-in-python-timer-multithreading-def-etc
+# this file was created by Ziante
+# with the help from
+
+from timeit import default_timer
 import random
-from threading import Timer
 
-randint = (print(one[randint(0, len(one)-1)]+' '+two[randint(0, len(two)-1)]+' '+three[randint(0, len(three)-1)]+' '+four[randint(0, len(four)-1)]+' '+five[randint(0, len(five)-1)]+'.'))
-one = ["The", "An", "Our", "Their"]
-two = ["enthusiastic", "active" , "efficient", "archaic", "animalistic", "underrated"]
-three = ["boy", "cat", "computer", "machine", "guy", "girl", "lion", "zebra", "car"]
-four = ["eats nasty", "chases many", "makes very efficient", "produces a mass amount of", "jumps on", "cooks very good"]
-five = ["chocolate bars", "mice throughout the zoo", "criminals in the park", "tools under the shed"]
-score = 0
+# function for each round
 
-endgame = 0
+def gameround(speed,text,score):
 
-def printover():
-    print("game OVER")
-    endgame = 1
+# ready to begin?
 
-def input():
-    points = 0
-    while(score >= 0):
-        timeout = 10
-        timer = Timer(timeout, printover)
-        timer.start()
-        if(points < 5):
-            cs = print((print(one[randint(0, len(one)-1)]+' '+two[randint(0, len(two)-1)]+' '+three[randint(0, len(three)-1)]+' '+four[randint(0, len(four)-1)]+' '+five[randint(0, len(five)-1)]+'.')))
-        print("Type this sentence:", ((one[randint(0, len(one)-1)]+' '+two[randint(0, len(two)-1)]+' '+three[randint(0, len(three)-1)]+' '+four[randint(0, len(four)-1)]+' '+five[randint(0, len(five)-1)]+'.')))
-        user = "You have %d seconds to choose the correct answer...\n" % timeout
-        answer = input(user)
-        timer.cancel()
-        if (answer == cs) and (endgame == 0):
-            print("Keep going")
-            points += 1
-        else:
-            print("Bye")
-            exit()
-input()
+    throwawayvariable = input("Start whenever you are ready. Press enter to begin".format(speed))
+
+# start the timer
+
+    starttime = default_timer()
+
+# give them a text from the list to type
+
+    theirAnswer = input("Type this text: {}\n".format(text))
+
+# stop timer and calculate how they did
+
+    stoptime = default_timer()
+
+    totalTime = stoptime - starttime
+    print("it took you {} seconds".format(totalTime))
+
+# who won, update score
+
+    if totalTime <= speed and theirAnswer == text:
+        print("there we go")
+        score[0] = score[0] + 1
+    else:
+        print("That was terrible!")
+        score[1] = score[1] + 1
+
+# return score
+    return score
+
+#score board
+
+score = [0,0]
+
+# different list of sentences to type
+
+masterlist = ['He went to the store to get groceries for his family', 'She payed for his friend because his parents gave him 3 dollars.', 'We walked to the beach with my dog after we ate breakfast', 'She did not want to go into the water because she heard there were sharks.']
+
+# game loop
+
+# either feed or break the function
+
+while True:
+    if score[0] == 2 or score[1] == 2:
+        if score[0] == 2:
+            print("great job!!!")
+        if score[1] == 2:
+            print("keep practicing!")
+        break
+    else:
+        textspeed = random.randint(10,20)
+        a = random.randint(0,3)
+        textTocopy = masterlist[a]
+        score = gameround(textspeed,textTocopy,score)
+        print("your score is {}".format(score[0]))
+        print("the computer score is {}".format(score[1]))
+
